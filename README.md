@@ -255,15 +255,26 @@ func (jst *JsonStruct) Load(filename string, v interface{}) {
 	}
 }
 
-func delIndex(data Data) {
+func delIndex(data tools.Data) {
 	currentTime := time.Now()
-	oldTime := currentTime.AddDate(0, 0, data.Day)
-	format := oldTime.Format(data.IndexFmt)
-	index := getIndex(data)
+
+	stimptime := ""
+	for i := 0; i < int(math.Abs(float64(data.Day))) ; i++ {
+		oldTime := currentTime.AddDate(0, 0, data.Day + i)
+		format := oldTime.Format(data.IndexFmt)
+		stimptime = fmt.Sprintf("%s %s", stimptime, format)
+	}
+
+	index := tools.GetIndex(data)
 	for k := range index {
-		fmt.Println("key:", k, "format:", format)
-		if find := strings.Contains(k, format); find {
-			DelIndex(data, k)
+		split := strings.Split(k, "-")
+		fmt.Println("key:", k, "是否在里边:", stimptime)
+		if len(split) > 1 {
+			if find := strings.Contains(stimptime,split[1]); find {
+				fmt.Println("-----0--")
+				b := tools.DelIndex(data, k)
+				fmt.Println(b)
+			}
 		}
 	}
 }
