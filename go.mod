@@ -1,11 +1,8 @@
-module esTools
+module estools
 
 go 1.17
 
-require (
-	github.com/olivere/elastic/v7 v7.0.28
-	github.com/robfig/cron v1.2.0
-)
+require github.com/olivere/elastic/v7 v7.0.30
 
 require (
 	github.com/josharian/intern v1.0.0 // indirect

@@ -1,4 +1,4 @@
-package main
+package tools
 
 import (
 	"context"
@@ -9,15 +9,15 @@ import (
 	"time"
 )
 
-var host = []string{
-	//"http://118.195.194.75:32092/",
-	//"http://1.117.11.230:9200/",
-	"http://118.195.193.92:9200/",
+type Data struct {
+	Host     string `json:"host"`
+	IndexFmt string `json:"index_fmt"`
+	Day      int    `json:"day"`
 }
 
 // GetEsClient 初始化客户端
 func GetEsClient(data Data) *elastic.Client {
-	Init()
+
 	file := "./eslog.log"
 	logFile, _ := os.OpenFile(file, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766) // 应该判断error，此处简略
 	client, err := elastic.NewClient(
@@ -94,7 +94,7 @@ func DelIndex(data Data, index ...string) bool {
 	return response.Acknowledged
 }
 
-func getIndex(data Data) map[string]interface{} {
+func GetIndex(data Data) map[string]interface{} {
 	client := GetEsClient(data)
 	mapping := client.GetMapping()
 	service := mapping.Index("*")
